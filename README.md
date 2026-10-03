@@ -30,7 +30,7 @@ The script uses the synchronous dataset-items endpoint and prints a compact view
 
 ## Try the API request in Postman
 
-Import [the Postman collection](examples/postman-collection.json) as a file or URL. In your own local Postman environment, create a secret variable named `APIFY_TOKEN` with your Apify API token and select that environment. The collection sends the token as a bearer header, never in the URL. Review the request body and the Actor's live Pricing tab before selecting **Send**: every Send starts a paid run. The included input uses one public feed and caps items at five. The collection contains no token or live-run response.
+Download [the Postman collection](examples/postman-collection.json) and import the JSON file, or import its [raw JSON URL](https://raw.githubusercontent.com/Technical-Dost/apify-rss-feed-to-json-example/main/examples/postman-collection.json). In your own local Postman environment, create a secret variable named `APIFY_TOKEN` with your Apify API token and select that environment. The collection sends the token as a bearer header, never in the URL. Review the request body and the Actor's live Pricing tab before selecting **Send**: every Send starts a paid run. The included input uses one public feed and caps items at five. The collection contains no token or live-run response.
 
 ## Data contract to plan around
 
