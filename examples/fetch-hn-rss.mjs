@@ -11,7 +11,7 @@ if (!token) {
     };
 
     const response = await fetch(
-        'https://api.apify.com/v2/acts/technicaldost~rss-feed-scraper/run-sync-get-dataset-items?timeout=120',
+        'https://api.apify.com/v2/actors/technicaldost~rss-feed-scraper/run-sync-get-dataset-items?timeout=120',
         {
             method: 'POST',
             headers: {

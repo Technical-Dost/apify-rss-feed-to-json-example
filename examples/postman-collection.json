@@ -35,7 +35,7 @@
             }
           }
         },
-        "url": "https://api.apify.com/v2/acts/technicaldost~rss-feed-scraper/run-sync-get-dataset-items?timeout=120",
+        "url": "https://api.apify.com/v2/actors/technicaldost~rss-feed-scraper/run-sync-get-dataset-items?timeout=120",
         "description": "Each Send starts one paid Actor run. For this single-feed input, a successful parse yields one feed_metadata row and up to five feed_item rows; a failed feed can yield an error row. Inspect the type field rather than assuming every row is an article. Check https://apify.com/technicaldost/rss-feed-scraper for current pricing. Set APIFY_TOKEN only in a local Postman environment as a secret variable; never save a real token in a shared collection or URL."
       },
       "response": []
