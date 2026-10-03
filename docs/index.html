@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Convert one RSS or Atom feed to JSON on Apify. See a five-item input, example output, row costs, and a Node.js API example.">
+  <title>RSS to JSON on Apify: a five-item first run</title>
+  <style>
+    :root { color-scheme: light; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #16302b; background: #f5f8f4; }
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.55; }
+    a { color: #08734f; }
+    a:hover { color: #055438; }
+    header, main, footer { max-width: 900px; margin: auto; padding: 0 24px; }
+    header { padding-top: 72px; padding-bottom: 38px; }
+    .eyebrow { color: #326b5a; font-size: .85rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    h1 { max-width: 760px; font-size: clamp(2.4rem, 6vw, 4.4rem); line-height: 1.06; letter-spacing: -.04em; margin: 12px 0 20px; }
+    h2 { font-size: 1.55rem; margin: 0 0 14px; }
+    p { max-width: 720px; }
+    .lead { font-size: 1.18rem; color: #3d5b51; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+    .button { display: inline-block; padding: 12px 17px; border-radius: 9px; border: 1px solid #08734f; font-weight: 700; text-decoration: none; }
+    .primary { background: #08734f; color: #fff; }
+    .primary:hover { background: #055438; color: #fff; }
+    .secondary { background: #fff; }
+    main { padding-bottom: 56px; }
+    section { margin: 16px 0; padding: 26px; border: 1px solid #d7e5da; border-radius: 14px; background: #fff; }
+    ol { padding-left: 22px; }
+    li { margin: 7px 0; }
+    pre { overflow-x: auto; padding: 18px; border-radius: 9px; background: #15342b; color: #effbf3; font-size: .9rem; line-height: 1.45; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .note { color: #425e54; font-size: .94rem; }
+    footer { padding-bottom: 40px; color: #526b62; font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">Free tutorial · Paid Apify Actor</div>
+    <h1>Turn an RSS feed into JSON in one small run.</h1>
+    <p class="lead">Use Technical Dost's RSS Feed Scraper to read a public RSS or Atom feed, inspect its entries, and export structured rows. This example caps the first run at five items.</p>
+    <div class="actions">
+      <a class="button primary" href="https://apify.com/technicaldost/rss-feed-scraper/input">Open the Actor input</a>
+      <a class="button secondary" href="https://github.com/SiddhantOfficial/apify-rss-feed-to-json-example">View the runnable example</a>
+    </div>
+  </header>
+  <main>
+    <section>
+      <h2>1. Start with one feed</h2>
+      <p>Paste this input into the Actor's JSON editor. The feed is public and the five-item limit keeps the first result small.</p>
+      <pre><code>{
+  "feedUrls": ["https://news.ycombinator.com/rss"],
+  "maxItemsPerFeed": 5,
+  "includeContent": true
+}</code></pre>
+      <p class="note">Starting the run is billable. At the price displayed on 3 October 2026, $0.008 per output row, one successful feed produces at most one metadata row plus five item rows: $0.048. Check the Actor's current Pricing tab before running.</p>
+    </section>
+    <section>
+      <h2>2. Use the right rows</h2>
+      <p>The dataset can contain a <code>feed_metadata</code> row and <code>feed_item</code> rows. A feed that cannot be parsed yields an <code>error</code> row. Filter on <code>type === "feed_item"</code> when your workflow needs entries only.</p>
+      <pre><code>{
+  "type": "feed_item",
+  "feedUrl": "https://news.ycombinator.com/rss",
+  "title": "Illustrative item",
+  "link": "https://example.com/illustrative-item",
+  "pubDate": "2026-10-02T00:00:00.000Z"
+}</code></pre>
+      <p class="note">This row is illustrative, not a live claim about the current Hacker News feed. Publishers choose which fields to include. The Actor reads feed content; it does not crawl the linked articles.</p>
+    </section>
+    <section>
+      <h2>3. Put it in a script</h2>
+      <p>The <a href="https://github.com/SiddhantOfficial/apify-rss-feed-to-json-example/blob/main/examples/fetch-hn-rss.mjs">Node.js example</a> sends the same bounded input to Apify's Actor API and prints each item title, link, and date. It requires your Apify token in <code>APIFY_TOKEN</code>; keep that token out of source control.</p>
+      <pre><code>export APIFY_TOKEN='your-token-here'
+node examples/fetch-hn-rss.mjs</code></pre>
+      <p class="note">Each script execution starts a billable Actor run. The repository also contains <a href="https://github.com/SiddhantOfficial/apify-rss-feed-to-json-example/blob/main/examples/sample-output.json">synthetic sample output</a> you can inspect without running the Actor.</p>
+    </section>
+    <section>
+      <h2>Before you automate</h2>
+      <ol>
+        <li>Set <code>maxItemsPerFeed</code> explicitly. Omitted API input defaults to 50.</li>
+        <li>Budget for up to <code>1 + maxItemsPerFeed</code> rows per successfully parsed feed.</li>
+        <li>Handle <code>error</code> rows and optional fields such as author or full content.</li>
+        <li>For a pipeline that needs only new entries across runs, evaluate <a href="https://apify.com/technicaldost/rss-feed-monitor">RSS Feed Monitor</a> separately.</li>
+      </ol>
+    </section>
+  </main>
+  <footer>By Technical Dost Solutions · <a href="https://apify.com/technicaldost/rss-feed-scraper">RSS Feed Scraper on Apify</a> · <a href="https://github.com/SiddhantOfficial/apify-rss-feed-to-json-example">Example source</a></footer>
+</body>
+</html>
