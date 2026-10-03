@@ -1,0 +1,20 @@
+[
+  {
+    "type": "feed_metadata",
+    "title": "Example Feed",
+    "feedUrl": "https://news.ycombinator.com/rss",
+    "itemCount": 20,
+    "scrapedAt": "2026-10-03T00:00:00.000Z"
+  },
+  {
+    "type": "feed_item",
+    "feedTitle": "Example Feed",
+    "feedUrl": "https://news.ycombinator.com/rss",
+    "title": "Illustrative item",
+    "link": "https://example.com/illustrative-item",
+    "pubDate": "2026-10-02T00:00:00.000Z",
+    "categories": [],
+    "summary": "Illustrative feed-provided summary.",
+    "scrapedAt": "2026-10-03T00:00:00.000Z"
+  }
+]

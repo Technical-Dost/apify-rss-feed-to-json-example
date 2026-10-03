@@ -1,0 +1,5 @@
+{
+  "feedUrls": ["https://news.ycombinator.com/rss"],
+  "maxItemsPerFeed": 5,
+  "includeContent": true
+}
