@@ -46,10 +46,22 @@ For clients that import an API definition, use the [Actor-specific OpenAPI 3.0 d
 
 For multiple feeds, add URLs to `feedUrls` and budget for up to `1 + maxItemsPerFeed` rows per successful feed. Set `maxItemsPerFeed` explicitly in API requests: the Actor's omitted-input default is 50.
 
+### Count feed failures after a run
+
+The Actor writes one `error` row per failed feed, but no aggregate run-summary row. Apify can mark the overall run successful when one feed fails and another succeeds. Export the run's default dataset as JSON, then count the rows locally:
+
+```bash
+node examples/summarize-dataset.mjs path/to/exported-dataset.json
+```
+
+The command prints successful-feed, returned-item, and failed-feed counts plus the failed feed URLs. It exits with code `1` if any feed failed or the dataset is empty, so a scheduled workflow can flag the result. It exits with code `2` for invalid input. To try it without an Actor run, pass [the illustrative fixture](examples/sample-output.json) instead. `itemCount` in a metadata row describes the feed's source count; `returnedItems` in this receipt counts the rows actually returned under the cap.
+
 ## Verify this example without an Actor run
 
 ```bash
 node --check examples/fetch-hn-rss.mjs
+node --check examples/summarize-dataset.mjs
+node examples/summarize-dataset.mjs examples/sample-output.json
 node -e "JSON.parse(require('fs').readFileSync('examples/sample-input.json'))"
 node -e "JSON.parse(require('fs').readFileSync('examples/sample-output.json'))"
 node -e "JSON.parse(require('fs').readFileSync('examples/postman-collection.json'))"

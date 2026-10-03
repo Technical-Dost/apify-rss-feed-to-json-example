@@ -74,6 +74,7 @@
   "pubDate": "2026-10-02T00:00:00.000Z"
 }</code></pre>
       <p class="note">This row is illustrative, not a live claim about the current Hacker News feed. Publishers choose which fields to include. The Actor reads feed content; it does not crawl the linked articles.</p>
+      <p>A completed Actor run can still contain <code>error</code> rows for individual feeds. The Actor does not emit an aggregate failed-feed summary. After exporting the default dataset as JSON, use the <a href="https://github.com/Technical-Dost/apify-rss-feed-to-json-example/blob/main/examples/summarize-dataset.mjs">local receipt script</a> to count successful feeds, returned items, and failed feeds; it exits nonzero when a feed failed. You can try it on the synthetic sample output without starting a paid run.</p>
     </section>
     <section>
       <h2>3. Try the API</h2>
