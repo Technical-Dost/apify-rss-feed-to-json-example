@@ -15,6 +15,8 @@ One successful feed capped at five items produces at most six dataset rows. At t
 3. Check the Pricing tab, then start the run and inspect the default dataset.
 4. Filter rows where `type` is `feed_item` when you need only entries. `feed_metadata` and `error` rows have other uses and should be handled separately.
 
+Prefer a preconfigured example? The Actor also has [published Apify tasks](https://apify.com/technicaldost/rss-feed-scraper/examples) for news, AI research blogs, and a YouTube channel feed. Their inputs and item limits differ from this five-item guide. Review the selected task's input and the live Actor pricing before starting a billable run.
+
 ## Run from Node.js
 
 Requires Node.js 18+ and your own Apify API token. Keep the token in the environment; never put it in a URL, a commit, or an issue.
