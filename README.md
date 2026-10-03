@@ -28,6 +28,10 @@ node examples/fetch-hn-rss.mjs
 
 The script uses the synchronous dataset-items endpoint and prints a compact view of the item rows. It makes one billable run each time it is executed. For a scheduled pipeline that should return only new entries across runs, evaluate [RSS Feed Monitor](https://apify.com/technicaldost/rss-feed-monitor) separately.
 
+## Try the API request in Postman
+
+Import [the Postman collection](examples/postman-collection.json) as a file or URL. In your own local Postman environment, create a secret variable named `APIFY_TOKEN` with your Apify API token and select that environment. The collection sends the token as a bearer header, never in the URL. Review the request body and the Actor's live Pricing tab before selecting **Send**: every Send starts a paid run. The included input uses one public feed and caps items at five. The collection contains no token or live-run response.
+
 ## Data contract to plan around
 
 | Row type | When it appears | Useful fields |
@@ -46,6 +50,7 @@ For multiple feeds, add URLs to `feedUrls` and budget for up to `1 + maxItemsPer
 node --check examples/fetch-hn-rss.mjs
 node -e "JSON.parse(require('fs').readFileSync('examples/sample-input.json'))"
 node -e "JSON.parse(require('fs').readFileSync('examples/sample-output.json'))"
+node -e "JSON.parse(require('fs').readFileSync('examples/postman-collection.json'))"
 ```
 
 This repository has no tracking, affiliate links, or credentials. The Actor's owner is Technical Dost Solutions.

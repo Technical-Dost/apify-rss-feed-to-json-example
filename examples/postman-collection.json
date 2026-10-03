@@ -1,0 +1,44 @@
+{
+  "info": {
+    "name": "Technical Dost RSS Feed Scraper: five-item example",
+    "description": "An importable example for Technical Dost's paid Apify Actor. Sending the request starts one billable run. Check the live Actor Pricing tab before sending. The request reads one public RSS feed and caps feed items at five; a successful feed also produces a metadata row. Error rows are possible. No API token is included in this collection.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{APIFY_TOKEN}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Run one public feed (paid; up to five items)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"feedUrls\": [\"https://news.ycombinator.com/rss\"],\n  \"maxItemsPerFeed\": 5,\n  \"includeContent\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "https://api.apify.com/v2/acts/technicaldost~rss-feed-scraper/run-sync-get-dataset-items?timeout=120",
+        "description": "Each Send starts one paid Actor run. For this single-feed input, a successful parse yields one feed_metadata row and up to five feed_item rows; a failed feed can yield an error row. Inspect the type field rather than assuming every row is an article. Check https://apify.com/technicaldost/rss-feed-scraper for current pricing. Set APIFY_TOKEN only in a local Postman environment as a secret variable; never save a real token in a shared collection or URL."
+      },
+      "response": []
+    }
+  ]
+}
