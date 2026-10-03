@@ -1,0 +1,205 @@
+openapi: 3.0.3
+info:
+  title: Technical Dost RSS Feed Scraper
+  version: '1.0.0'
+  description: >-
+    Run Technical Dost's paid Apify Actor on public RSS or Atom feeds and receive
+    its dataset rows as JSON. A successful feed can return one feed_metadata row
+    and feed_item rows; failed feeds can return error rows. Each POST starts a
+    billable Actor run. Check the live Actor pricing before sending a request.
+    This version identifies this Actor-specific API description, not an Apify
+    platform API release.
+  contact:
+    name: Technical Dost Solutions
+    url: https://technicaldost.com/actors/rss-feed-scraper
+  license:
+    name: MIT (this API description only)
+    url: https://github.com/Technical-Dost/apify-rss-feed-to-json-example/blob/main/LICENSE
+externalDocs:
+  description: Five-item first-run guide and illustrative output
+  url: https://technical-dost.github.io/apify-rss-feed-to-json-example/
+servers:
+  - url: https://api.apify.com
+security:
+  - ApifyBearer: []
+paths:
+  /v2/actors/technicaldost~rss-feed-scraper/run-sync-get-dataset-items:
+    post:
+      operationId: runRssFeedScraperAndGetDatasetItems
+      summary: Run the paid RSS Feed Scraper and return dataset rows
+      description: >-
+        Starts one billable Actor run and waits for its default dataset items.
+        The synchronous endpoint can time out while the Actor run continues.
+        A successful HTTP response may still contain an error row for a feed;
+        inspect each row's type. The API token belongs in the Authorization
+        header, not in the URL.
+      parameters:
+        - name: timeout
+          in: query
+          required: false
+          description: Optional Actor run timeout in seconds.
+          schema:
+            type: number
+            example: 120
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedInput'
+            example:
+              feedUrls:
+                - https://news.ycombinator.com/rss
+              maxItemsPerFeed: 5
+              includeContent: true
+      responses:
+        '201':
+          description: >-
+            Dataset rows from a completed run. The illustrative example below
+            is not a claim about current feed contents.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatasetRow'
+              example:
+                - type: feed_metadata
+                  feedUrl: https://news.ycombinator.com/rss
+                  title: Example Feed
+                  itemCount: 20
+                  scrapedAt: '2026-10-03T00:00:00.000Z'
+                - type: feed_item
+                  feedUrl: https://news.ycombinator.com/rss
+                  feedTitle: Example Feed
+                  title: Illustrative item
+                  link: https://example.com/illustrative-item
+                  pubDate: '2026-10-02T00:00:00.000Z'
+                  scrapedAt: '2026-10-03T00:00:00.000Z'
+        '400':
+          description: Invalid request or Actor input.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: API token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '408':
+          description: >-
+            The synchronous HTTP request timed out. This does not necessarily
+            mean the Actor run was aborted; inspect the run in Apify Console.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  securitySchemes:
+    ApifyBearer:
+      type: http
+      scheme: bearer
+      description: >-
+        Use your own Apify API token in Authorization: Bearer <token>. Never put
+        it in a shared document, source file, or request URL.
+  schemas:
+    FeedInput:
+      type: object
+      required:
+        - feedUrls
+      properties:
+        feedUrls:
+          type: array
+          description: Public RSS or Atom feed URLs to parse.
+          items:
+            type: string
+            format: uri
+        maxItemsPerFeed:
+          type: integer
+          minimum: 1
+          maximum: 500
+          default: 50
+          description: >-
+            Maximum feed_item rows per feed. Each successfully parsed feed
+            can also add one billable feed_metadata row.
+        includeContent:
+          type: boolean
+          default: true
+          description: Include full content when the publisher supplies it.
+    DatasetRow:
+      type: object
+      additionalProperties: true
+      description: >-
+        A feed_metadata, feed_item, or error row. Fields are optional because
+        feed publishers supply different metadata. Inspect type before use.
+      properties:
+        type:
+          type: string
+          nullable: true
+          description: Typically feed_metadata, feed_item, or error.
+        feedUrl:
+          type: string
+          nullable: true
+        feedTitle:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        link:
+          type: string
+          nullable: true
+        pubDate:
+          type: string
+          nullable: true
+        publishedAt:
+          type: string
+          nullable: true
+        summary:
+          type: string
+          nullable: true
+        content:
+          type: string
+          nullable: true
+        author:
+          type: string
+          nullable: true
+        categories:
+          type: array
+          nullable: true
+          items:
+            type: string
+            nullable: true
+        itemCount:
+          type: integer
+          nullable: true
+        error:
+          type: string
+          nullable: true
+        scrapedAt:
+          type: string
+          nullable: true
+        enclosure:
+          type: object
+          nullable: true
+          additionalProperties: true
+        mediaContent:
+          nullable: true
+          description: Feed-provided media payload; shape varies by source.
+    ApiError:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - type
+            - message
+          properties:
+            type:
+              type: string
+            message:
+              type: string

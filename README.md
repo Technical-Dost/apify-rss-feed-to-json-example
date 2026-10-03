@@ -32,6 +32,8 @@ The script uses the synchronous dataset-items endpoint and prints a compact view
 
 Download [the Postman collection](examples/postman-collection.json) and import the JSON file, or import its [raw JSON URL](https://raw.githubusercontent.com/Technical-Dost/apify-rss-feed-to-json-example/main/examples/postman-collection.json). In your own local Postman environment, create a secret variable named `APIFY_TOKEN` with your Apify API token and select that environment. The collection sends the token as a bearer header, never in the URL. Review the request body and the Actor's live Pricing tab before selecting **Send**: every Send starts a paid run. The included input uses one public feed and caps items at five. The collection contains no token or live-run response.
 
+For clients that import an API definition, use the [Actor-specific OpenAPI 3.0 description](openapi/rss-feed-scraper.openapi.yaml) or its [stable raw URL](https://raw.githubusercontent.com/Technical-Dost/apify-rss-feed-to-json-example/main/openapi/rss-feed-scraper.openapi.yaml). It describes the paid synchronous request, bearer authentication, bounded input, and dataset row types. It does not describe every Apify platform endpoint. The included response example is synthetic. Recheck the Actor's live input schema and Apify API documentation if you maintain a fork or update an integration.
+
 ## Data contract to plan around
 
 | Row type | When it appears | Useful fields |
@@ -51,6 +53,7 @@ node --check examples/fetch-hn-rss.mjs
 node -e "JSON.parse(require('fs').readFileSync('examples/sample-input.json'))"
 node -e "JSON.parse(require('fs').readFileSync('examples/sample-output.json'))"
 node -e "JSON.parse(require('fs').readFileSync('examples/postman-collection.json'))"
+uvx --from openapi-spec-validator openapi-spec-validator openapi/rss-feed-scraper.openapi.yaml
 ```
 
 This repository has no tracking, affiliate links, or credentials. The Actor's owner is Technical Dost Solutions.
